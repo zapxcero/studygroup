@@ -1,0 +1,40 @@
+<div class="column is-4 card">
+  <header class="card-header">
+    <p class="card-header-title">
+        <%= link_to event['name'], event_path(event["id"])%>
+    </p>
+    <button class="card-header-icon" aria-label="more options">
+      <span class="icon">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </header>
+  <div class="card-content">
+    <div class="content">
+      Location: <%=event["location"]%>
+        <br>
+        Creator: <%= event["creator_id"]%>
+      <br>
+      Date: <time datetime="2016-1-1"><%=event["date"]%></time>
+          <br>
+          Attendees:
+                     <%res = RestClient.get("https://lwznbznauavlibpsepta.supabase.co/rest/v1/attendances?attended_event_id=eq.#{event["id"]}&select=attendee_id", { apikey: ENV['supabase_api_key'], Authorization: "Bearer #{ENV['supabase_api_key']}" })%>
+
+    <%gz = Zlib::GzipReader.new(StringIO.new(res.body))%>
+    <%attendees = JSON.parse(gz.read)%>
+          <ul>
+ 
+      <% attendees.each do |attendee|%>
+        <li><%= attendee["attendee_id"]%></li>
+        <% end %>
+          </ul>
+    </div>
+  </div>
+  <% if current_user %>
+    <%= render "event_footer", event: event%>
+  <% else %>
+    <footer class="card-footer">
+      <%= link_to "Sign in to attend", login_path, class: "card-footer-item"%>
+    </footer>
+  <% end %>
+</div>
