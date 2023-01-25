@@ -1,0 +1,32 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <%= link_to (image_tag "ccc-logo.svg", height: "200"), root_path, class: "navbar-item"%>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <%=link_to "Home", root_path, class: "navbar-item"%>
+      <div class="buttons">
+        <% if current_user %>
+          <%=link_to "New Study Group", new_event_path, class: "navbar-item", class: "button is-success" %></div>
+      <% end %>
+    </div>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <div class="buttons">
+        <% if current_user %>
+          <%= button_to "Logout", logout_path, data: {turbo: false}, class: "button is-light"%>
+        <% else %>
+          <%= link_to "Sign Up", signup_path, class: "button is-primary" %>
+          <%= link_to "Login", login_path, class: "button is-light"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+</nav>

@@ -1,15 +1,18 @@
-<h1>Pages#signup</h1>
-<p>Find me in app/views/pages/signup.html.erb</p>
-
-
-<%= form_with url: signup_path, method: :post, local:true do |form| %>
-  <div class="form-group">
-    <%= form.label :email %>
-    <%= form.email_field :email, class: 'form-control' %>
+<section class="section">
+  <div class="container">
+    <h2 class="title">Sign up</h2>
+    <%= form_with url: signup_path, local:true, method: :post do |f| %>
+      <div class="field">
+        <%= f.label :email, class: "label" %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+      </div>
+      <div class="field">
+        <%= f.label :password, class: "label" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "input" %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Sign up", class: "button is-link" %>
+      </div>
+    <% end %>
   </div>
-  <div class="form-group">
-    <%= form.label :password %>
-    <%= form.password_field :password, class: 'form-control' %>
-  </div>
-  <%= form.submit 'Sign up', class: 'btn btn-primary' %>
-<% end %>
+</section>
