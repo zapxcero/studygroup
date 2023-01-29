@@ -5,7 +5,7 @@
   <% else %>
     <%= form_with url: "", method: :post do |f|%>
       <%= f.hidden_field :attended_event_id, value: event['id'] %>
-      <%= f.submit "Attend", "#", class: "button is-medium is-info is-outlined my-3" %>
+      <%= f.submit "Attend", class: "button is-medium is-info is-outlined my-3" %>
     <% end %>
   <% end %>
   <% if event["creator_id"] == current_user%>
