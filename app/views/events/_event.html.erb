@@ -31,7 +31,7 @@
     </div>
   </div>
   <% if current_user %>
-    <%= render "event_footer", event: event%>
+    <%= render "event_footer", event: event, attendees: attendees%>
   <% else %>
     <footer class="card-footer">
       <%= link_to "Sign in to attend", login_path, class: "card-footer-item"%>

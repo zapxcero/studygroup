@@ -1,18 +1,15 @@
 <footer class="card-footer">
-  <%# if event.attendees.include?(current_user)%>
-    <%#form_with url: "/attendances/#{event.attendances.find_by(attended_event_id: event.id).id}", method: :delete do |f|%>
-      <%# f.submit "Cancel", class: "button is-medium is-danger is-outlined my-3" %>
-    <%# end %>
-  <%# else %>
-    <%# form_with url: "/attendances", method: :post do |f|%>
-      <%# f.hidden_field :attended_event_id, value: event.id %>
-      <%# f.submit "Attend", class: "button is-medium is-info is-outlined my-3" %>
-    <%# end %>
-  <%# end %>
-  <%# if event.creator == current_user%>
-    <%# link_to "Edit", edit_event_path(event), class: "card-footer-item"%>
-    <%#form_with model: event, method: :delete do |f|%>
-      <%# f.submit "Delete", class: "button is-medium is-danger my-3"%>
-    <%# end %>
-  <%# end %>
+  <% attendees = attendees.map { |hash| hash["attendee_id"] } %>
+  <%if attendees.include?(current_user) %>
+      <%= button_to "Cancel", "#" , method: :delete, class: "button is-medium is-danger is" %>
+  <% else %>
+    <%= form_with url: "", method: :post do |f|%>
+      <%= f.hidden_field :attended_event_id, value: event['id'] %>
+      <%= f.submit "Attend", "#", class: "button is-medium is-info is-outlined my-3" %>
+    <% end %>
+  <% end %>
+  <% if event["creator_id"] == current_user%>
+    <%= link_to "Edit", edit_event_path(event["id"]), class: "card-footer-item"%>
+    <%= button_to "Delete", event_path(event["id"]), method: :delete, class: "button is-medium is-danger my-3"%>
+  <% end %>
 </footer>
