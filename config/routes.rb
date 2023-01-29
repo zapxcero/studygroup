@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   post 'signup', to: 'pages#signup_create'
   post 'logout', to: 'pages#logout'
 
-  resources :event
+  resources :events
 end

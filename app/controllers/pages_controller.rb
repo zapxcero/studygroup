@@ -17,7 +17,6 @@ class PagesController < ApplicationController
     data = JSON.parse(response.body)
     session[:user_id] = data['user']['id']
     session[:data] = data
-    binding.pry
     redirect_to root_path, notice: 'Logged in successfully!'
   end
 
@@ -31,14 +30,15 @@ class PagesController < ApplicationController
 
     payload = {
       email: params[:email],
-      password: params[:password]
+      password: params[:password],
+      data: {
+        full_name: params[:full_name]
+      }
     }
     response = RestClient.post("#{SUPABASE_URL}/auth/v1/signup", payload.to_json, headers)
-
     data = JSON.parse(response.body)
     session[:user_id] = data['id']
     session[:data] = data
-
     redirect_to root_path, notice: 'Signed up successfully!' if response.code >= 200 && response.code < 300
   end
 
