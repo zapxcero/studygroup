@@ -1,9 +1,9 @@
 <footer class="card-footer">
   <% attendees = attendees.map { |hash| hash["attendee_id"] } %>
   <%if attendees.include?(current_user) %>
-      <%= button_to "Cancel", "#" , method: :delete, class: "button is-medium is-danger is-outlined my-3" %>
+      <%= button_to "Cancel", attendance_path(event["id"]) , method: :delete, class: "button is-medium is-danger is-outlined my-3", name: "attended_event_id",value: event["id"] %>
   <% elsif event["creator_id"] != current_user%>
-    <%= form_with url: "", method: :post do |f|%>
+    <%= form_with url: attendances_path, method: :post do |f|%>
       <%= f.hidden_field :attended_event_id, value: event['id'] %>
       <%= f.submit "Attend", class: "button is-medium is-info is-outlined my-3" %>
     <% end %>

@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   post 'logout', to: 'pages#logout'
 
   resources :events
+  resources :attendances, only: %i[create destroy]
 end
