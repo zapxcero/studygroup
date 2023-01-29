@@ -13,7 +13,7 @@ class PagesController < ApplicationController
       email: params[:email],
       password: params[:password]
     }
-    response = RestClient.post("#{SUPABASE_URL}/auth/v1/token?grant_type=password", payload.to_json, headers)
+    response = RestClient.post("#{supabase_url}/auth/v1/token?grant_type=password", payload.to_json, headers)
     data = JSON.parse(response.body)
     session[:user_id] = data['user']['id']
     session[:data] = data
@@ -35,7 +35,7 @@ class PagesController < ApplicationController
         full_name: params[:full_name]
       }
     }
-    response = RestClient.post("#{SUPABASE_URL}/auth/v1/signup", payload.to_json, headers)
+    response = RestClient.post("#{supabase_url}/auth/v1/signup", payload.to_json, headers)
     data = JSON.parse(response.body)
     session[:user_id] = data['id']
     session[:data] = data
