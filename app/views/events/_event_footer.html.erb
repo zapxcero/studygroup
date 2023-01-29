@@ -1,7 +1,7 @@
 <footer class="card-footer">
   <% attendees = attendees.map { |hash| hash["attendee_id"] } %>
   <%if attendees.include?(current_user) %>
-      <%= button_to "Cancel", "#" , method: :delete, class: "button is-medium is-danger is" %>
+      <%= button_to "Cancel", "#" , method: :delete, class: "button is-medium is-danger is-outlined my-3" %>
   <% elsif event["creator_id"] != current_user%>
     <%= form_with url: "", method: :post do |f|%>
       <%= f.hidden_field :attended_event_id, value: event['id'] %>
