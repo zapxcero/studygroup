@@ -13,19 +13,22 @@
     <div class="content">
       Location: <%=event["location"]%>
         <br>
-        Creator: <%= event["creator_id"]%>
+        
+        <% full_name  = RestClient.get("#{supabase_url}/rest/v1/profiles?id=eq.#{event["creator_id"]}&select=full_name", {apikey: ENV['supabase_api_key'], Authorization: "Bearer #{ENV['supabase_api_key']}", Range: '0-9'})%>
+        Creator: <%= JSON.parse(full_name.body).first["full_name"] %>
       <br>
       Date: <time datetime="2016-1-1"><%=event["date"]%></time>
           <br>
           Attendees:
-                     <%res = RestClient.get("https://lwznbznauavlibpsepta.supabase.co/rest/v1/attendances?attended_event_id=eq.#{event["id"]}&select=attendee_id", { apikey: ENV['supabase_api_key'], Authorization: "Bearer #{ENV['supabase_api_key']}" })%>
+                     <%res = RestClient.get("#{supabase_url}/rest/v1/attendances?attended_event_id=eq.#{event["id"]}&select=attendee_id", { apikey: ENV['supabase_api_key'], Authorization: "Bearer #{ENV['supabase_api_key']}" })%>
 
     <%gz = Zlib::GzipReader.new(StringIO.new(res.body))%>
     <%attendees = JSON.parse(gz.read)%>
           <ul>
  
       <% attendees.each do |attendee|%>
-        <li><%= attendee["attendee_id"]%></li>
+        <% full_name  = RestClient.get("#{supabase_url}/rest/v1/profiles?id=eq.#{attendee["attendee_id"]}&select=full_name", {apikey: ENV['supabase_api_key'], Authorization: "Bearer #{ENV['supabase_api_key']}", Range: '0-9'})%>
+        <li><%= JSON.parse(full_name.body).first["full_name"] %></li>
         <% end %>
           </ul>
     </div>
