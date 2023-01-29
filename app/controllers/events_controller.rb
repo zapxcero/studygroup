@@ -29,9 +29,31 @@ class EventsController < ApplicationController
     redirect_to root_path, notice: 'Study Group created successfully!' if response.code >= 200 && response.code < 300
   end
 
-  def edit; end
+  def edit
+    headers = {
+      apikey: ENV['supabase_api_key'],
+      Authorization: "Bearer #{ENV['supabase_api_key']}",
+      Range: '0-9'
+    }
+    url = "#{SUPABASE_URL}/rest/v1/events?id=eq.1&select=id,name,location,date"
 
-  def update; end
+    response = RestClient.get(url, headers)
+    @data = JSON.parse(response.body).first
+  end
+
+  def update
+    headers = {
+      apikey: ENV['supabase_api_key'],
+      Authorization: "Bearer #{ENV['supabase_api_key']}",
+      Content_Type: 'application/json',
+      Prefer: 'return=minimal'
+    }
+    url = "#{SUPABASE_URL}/rest/v1/events?id=eq.#{params[:id]}"
+
+    payload = { name: params[:event][:name], location: params[:event][:location], date: params[:event][:date] }.to_json
+    response = RestClient.patch(url, payload, headers)
+    redirect_to root_path, notice: 'Study Group edited succesfully!'
+  end
 
   def destroy
     headers = {

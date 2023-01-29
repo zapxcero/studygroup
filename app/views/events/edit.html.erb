@@ -1,0 +1,22 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title">Edit Study Group</h2>
+    <%= form_with scope: "event", url: event_path(@data["id"]), local:true, method: :put do |f| %>
+      <div class="field">
+        <%= f.label :name, class: "label" %><br />
+        <%= f.text_field :name, class: "input", value: @data["name"] %>
+      </div>
+      <div class="field">
+        <%= f.label :location, class: "label" %><br />
+        <%= f.text_field :location, class: "input",   value: @data["location"] %>
+      </div>
+          <div class="field">
+        <%= f.label :date, class: "label" %><br />
+        <%= f.date_field :date, value: @data["date"], class: "input" %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Update Study Group", class: "button is-link"%>
+      </div>
+    <% end %>
+  </div>
+</section
