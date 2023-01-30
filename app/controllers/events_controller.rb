@@ -5,7 +5,13 @@ class EventsController < ApplicationController
     @events = JSON.parse(gz.read)
   end
 
-  def show; end
+  def show
+    headers = common_headers.merge(Range: '0-9')
+    url = "#{supabase_url}/rest/v1/events?id=eq.#{params['id']}&select=id,name,location,date,creator_id"
+
+    response = RestClient.get(url, headers)
+    @event = JSON.parse(response.body).first
+  end
 
   def new; end
 
