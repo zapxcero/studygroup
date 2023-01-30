@@ -6,11 +6,7 @@ class EventsController < ApplicationController
       JSON.parse(gz.read)
     end
 
-    @profiles = Rails.cache.fetch('profiles', expires_in: 5.minutes) do
-      response = RestClient.get("#{supabase_url}/rest/v1/profiles?select=id,full_name", common_headers)
-      gz = Zlib::GzipReader.new(StringIO.new(response.body))
-      JSON.parse(gz.read)
-    end
+    @profiles = profiles
   end
 
   def show
