@@ -1,4 +1,10 @@
 <footer class="card-footer">
+  <%res = RestClient.get("#{supabase_url}/rest/v1/attendances?attended_event_id=eq.#{event["id"]}&select=attendee_id", common_headers )%>
+
+    <%gz = Zlib::GzipReader.new(StringIO.new(res.body))%>
+    <%attendees = JSON.parse(gz.read)%>
+
+      
   <% attendees = attendees.map { |hash| hash["attendee_id"] } %>
   <%if attendees.include?(current_user) %>
       <%= button_to "Cancel", attendance_path(event["id"]) , method: :delete, class: "button is-medium is-danger is-outlined my-3", name: "attended_event_id",value: event["id"] %>

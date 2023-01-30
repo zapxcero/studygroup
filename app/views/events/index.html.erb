@@ -8,7 +8,7 @@
     </div>
     <div class="columns is-variable is-8 is-multiline">
         <% @events.each do |event|%>
-          <%= render "event", event: event%>
+          <%= render "event", event: event, profiles: @profiles%>
         <% end %>
     </div>
   </div>

@@ -1,16 +1,26 @@
 class EventsController < ApplicationController
   def index
-    response = RestClient.get("#{supabase_url}/rest/v1/events?select=id,name,location,date,creator_id", common_headers)
-    gz = Zlib::GzipReader.new(StringIO.new(response.body))
-    @events = JSON.parse(gz.read)
+    @events = Rails.cache.fetch('events', expires_in: 5.minutes) do
+      response = RestClient.get("#{supabase_url}/rest/v1/events?select=id,name,location,date,creator_id", common_headers)
+      gz = Zlib::GzipReader.new(StringIO.new(response.body))
+      JSON.parse(gz.read)
+    end
+
+    @profiles = Rails.cache.fetch('profiles', expires_in: 5.minutes) do
+      response = RestClient.get("#{supabase_url}/rest/v1/profiles?select=id,full_name", common_headers)
+      gz = Zlib::GzipReader.new(StringIO.new(response.body))
+      JSON.parse(gz.read)
+    end
   end
 
   def show
-    headers = common_headers.merge(Range: '0-9')
-    url = "#{supabase_url}/rest/v1/events?id=eq.#{params['id']}&select=id,name,location,date,creator_id"
+    @event = Rails.cache.fetch("event_#{params['id']}", expires_in: 5.minutes) do
+      headers = common_headers.merge(Range: '0-9')
+      url = "#{supabase_url}/rest/v1/events?id=eq.#{params['id']}&select=id,name,location,date,creator_id"
 
-    response = RestClient.get(url, headers)
-    @event = JSON.parse(response.body).first
+      response = RestClient.get(url, headers)
+      JSON.parse(response.body).first
+    end
   end
 
   def new; end
@@ -32,7 +42,7 @@ class EventsController < ApplicationController
     url = "#{supabase_url}/rest/v1/events?id=eq.#{params['id']}&select=id,name,location,date"
 
     response = RestClient.get(url, headers)
-    @data = JSON.parse(response.body).first
+    @event = JSON.parse(response.body).first
   end
 
   def update
