@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
-  def home; end
-
   def login; end
+
+  def signup; end
 
   def login_create
     payload = {
@@ -14,8 +14,6 @@ class PagesController < ApplicationController
     redirect_to root_path, notice: 'Logged in successfully!'
   end
 
-  def signup; end
-
   def signup_create
     payload = {
       email: params[:email],
@@ -27,7 +25,7 @@ class PagesController < ApplicationController
     data = api_call('/auth/v1/signup', payload)
     session[:user_id] = data['id']
     session[:data] = data
-    redirect_to root_path, notice: 'Signed up successfully!' if response.code >= 200 && response.code < 300
+    redirect_to root_path, notice: 'Signed up successfully!'
   end
 
   def logout

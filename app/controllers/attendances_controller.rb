@@ -9,7 +9,7 @@ class AttendancesController < ApplicationController
   end
 
   def destroy
-    RestClient.delete("#{supabase_url}/rest/v1/attendances?attended_event_id=eq.#{params[:attended_event_id]}", common_headers)
+    RestClient.delete("#{supabase_url}/rest/v1/attendances?attended_event_id=eq.#{params[:attended_event_id]}&attendee_id=eq.#{current_user}", common_headers)
     redirect_to root_path, notice: 'Sucessfully unregistered.'
   end
 
